@@ -9,7 +9,6 @@
 <div>
   {% if request.user.is_authenticated %}
   <h4>Hello {{request.user}}</h4>
-  <a href="{% url 'userProfile' %}">Profile</a>
   <a href="{% url 'logout_page' %}">Logout</a>
   {% else %}
 
