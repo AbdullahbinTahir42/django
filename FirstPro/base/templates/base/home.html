@@ -38,7 +38,7 @@
         <h5>
           >{{room.id}} -- <a href="{% url 'room' room.id %}">{{room.name}}</a>
 
-          <h5>Created -> {{room.updated}}</h5>
+          <h5>Created -> {{ room.updated|timesince }}</h5>
           <br />
         </h5>
         <small>{{room.topic.name}}</small>
