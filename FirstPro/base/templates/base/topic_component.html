@@ -1,0 +1,14 @@
+<h3>Browse Topics</h3>
+<hr />
+<a href="{% url 'add_topic' %}">Add Topic</a>
+<br />
+<br />
+<h4><a href="{% url 'home' %}">All Topics</a></h4>
+
+{% for topic in topics %}
+<div>
+  <a href="{% url 'home' %}?q={{ topic.name }}">{{ topic.name }}</a>
+  <span>({{ topic.room_count }})</span>
+  <small><a href="{% url 'update_topic' topic.id %}">Edit</a></small>
+</div>
+{% endfor %}
