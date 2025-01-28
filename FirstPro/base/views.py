@@ -62,10 +62,14 @@ def home(request):
     room_count = rooms.count() 
     room_messages = Message.objects.filter(Q(room__topic__name__icontains = q))
 
-  
+    topics = Topic.objects.all()
+    topic_count = topics.count()
     topics = Topic.objects.annotate(room_count=Count('room'))
 
-    context = {'rooms': rooms, 'topics': topics, 'room_count': room_count, 'room_messages':room_messages}
+    context = {'rooms': rooms, 'topics': topics, 
+               'room_count': room_count, 'room_messages':room_messages,
+               'topic_count' : topic_count
+               }
     return render(request, 'base/home.html', context)
 
 def room(request, pk):
@@ -105,9 +109,10 @@ def createRoom(request):
             room.save()
             return redirect('home')
     context = {'form' : form}
-    return render(request,'base/room_form.html',context)
+    return render(request,'base/create-room.html',context)
 
-
+def setting(request):
+    return render(request,'base/settings.html')
 
 def AddTopic(request):
     form = TopicForm()
