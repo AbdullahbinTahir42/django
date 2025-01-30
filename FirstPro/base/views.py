@@ -11,7 +11,6 @@ from django.contrib.auth.forms import UserCreationForm
 
 
 def loginPage(request):
-    page = 'login_page'
     if request.user.is_authenticated:
         return redirect('home')
     if request.method == "POST":
@@ -28,8 +27,8 @@ def loginPage(request):
         else:
             
             messages.error(request, "Invalid username or password.")
-    context = {'page' : page}
-    return render(request, 'base/login_register.html', context) 
+    
+    return render(request, 'base/login.html') 
 
 
 def logoutuser(request):
@@ -38,18 +37,36 @@ def logoutuser(request):
 
 
 def registerPage(request):
-    form = UserCreationForm()
+    
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
-        if form.is_valid:
-            user = form.save(commit=False)
-            user.username = user.username.lower()
-            user.save()
-            login(request, user)
-            return redirect('home')
-        else:
-            messages.error(request,"Unable to register!!")
-    return render(request,'base/login_register.html',{'form': form})
+        fullname = request.POST.get('fullname')
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        confirm_password = request.POST.get('confirm_password')
+        users = User.objects.all()
+        for user in users:
+            if user.username == username:
+                messages.error(request, "Username already exits!")
+                return render(request, 'base/signup.html')
+
+
+        if password != confirm_password:
+            messages.error(request, "Passwords do not match")
+            return render(request, 'base/signup.html')  # Reload the same page with error message
+
+        # Optionally, you can add more validations for username and password here
+
+        # If passwords match, create a new user
+        user = User.objects.create_user(username=username, password=password)
+        user.first_name = fullname
+        user.save()
+
+        messages.success(request, "Account created successfully!")
+        login(request,user)
+        return redirect('home')  # Redirect to the login page after successful signup
+
+    return render(request, 'base/signup.html')  # Render the signup form
+
 
 
 def home(request):
@@ -59,7 +76,6 @@ def home(request):
         Q(name__icontains=q) |
         Q(host__username__icontains=q)
     )
-    room_count = rooms.count() 
     room_messages = Message.objects.filter(Q(room__topic__name__icontains = q))
 
     topics = Topic.objects.all()
@@ -67,7 +83,7 @@ def home(request):
     topics = Topic.objects.annotate(room_count=Count('room'))
 
     context = {'rooms': rooms, 'topics': topics, 
-               'room_count': room_count, 'room_messages':room_messages,
+                'room_messages':room_messages,
                'topic_count' : topic_count
                }
     return render(request, 'base/home.html', context)
@@ -89,27 +105,49 @@ def room(request, pk):
     context = {'room' : room, 'room_messages' : room_messages , 'participants' :participants}        
     return render(request, 'base/room.html',context)
 
-def userProfile(request,pk):
-    user = User.objects.get(id = pk)
-    rooms = user.room_set.all()
-    room_messages = user.message_set.all()
-    topics =  Topic.objects.annotate(room_count=Count('room'))
-    context = {'user' : user , 'rooms' : rooms, 
-               'room_messages' : room_messages , 'topics' : topics}
-    return render(request,'base/user_profile.html',context)
 
+
+def userProfile(request, pk):
+    user = User.objects.get(id=pk)
+    rooms = user.room_set.all()  # Rooms where the user is the host
+    participants = User.objects.filter(participants__in=rooms).distinct()  # Get all unique participants
+    room_messages = user.message_set.all()
+    topics = Topic.objects.annotate(room_count=Count('room'))
+    
+    context = {
+        'user': user,
+        'rooms': rooms,
+        'participants': participants,  # Unique participants
+        'room_messages': room_messages,
+        'topics': topics
+    }
+    return render(request, 'base/user_profile.html', context)
 @login_required(login_url='login_page')
 def createRoom(request):
-    form = RoomForm()
+    topics = Topic.objects.all() 
     if request.method == 'POST':
-        form = RoomForm(request.POST)
-        if form.is_valid():
-            room = form.save(commit=False)
-            room.host = request.user
-            room.save()
-            return redirect('home')
-    context = {'form' : form}
-    return render(request,'base/create-room.html',context)
+        # Retrieve data from the POST request
+        room_name = request.POST.get('room_name')
+        topic_name = request.POST.get('topic')
+        room_about = request.POST.get('room_about')
+
+        # Get or create the topic
+        topic, created = Topic.objects.get_or_create(name=topic_name)
+
+        # Create the new room
+        room = Room.objects.create(
+            host=request.user,
+            name=room_name,
+            topic=topic,
+            description=room_about,
+        )
+
+        # Redirect to the home page
+        return redirect('home')
+
+    context = {'topics': topics}
+    return render(request, 'base/create-room.html', context)
+
 
 def setting(request):
     return render(request,'base/settings.html')

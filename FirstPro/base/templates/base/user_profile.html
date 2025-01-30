@@ -37,15 +37,19 @@
 
         <div class="roomList__header">
           <div>
+           
             <h2>Study Rooms Hosted by “{{user.username}}”</a>
             </h2>
+
           </div>
         </div>
 
+    
         {% for room in rooms %}
         <div class="roomListRoom">
           <div class="roomListRoom__header">
-            <a href="profile.html" class="roomListRoom__author">
+            <a href="
+            " class="roomListRoom__author">
               <div class="avatar avatar--small active">
                 <img src="https://randomuser.me/api/portraits/men/11.jpg" />
               </div>
@@ -84,9 +88,12 @@
             <p class="roomListRoom__topic">{{room.topic}}</p>
           </div>
         </div>
+        {% empty %}
+        <p>There is no room Hosted by "{{user.username}}".</p>
 
         {% endfor %}
 
+      
       
       </div>
       <!-- Room List End -->
@@ -98,14 +105,5 @@
       <!-- Activities End -->
     </div>
   </main>
+  
   {% endblock content %}
-  <!-- 
-<h1>{{ user.username }}'s Profile</h1>
-
-<div class="profile-container">
-  <div>{% include 'base/topic_component.html' %}</div>
-
-  <div>{% include 'base/feed_component.html' %}</div>
-
-  <div>{% include 'base/activity_component.html' %}</div>
-</div> -->

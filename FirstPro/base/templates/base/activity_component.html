@@ -38,27 +38,14 @@
     </div>
     <div class="activities__boxContent">
       <p>
-        replied to post <a href="{% url 'room' msg.room.id %}"
-          >“{{msg.room.topic}}”</a
-        >
+        replied to post
+        <a href="{% url 'room' msg.room.id %}">“{{msg.room.topic}}”</a>
       </p>
       <div class="activities__boxRoomContent">{{ msg.body }}</div>
     </div>
   </div>
+  {% empty %}
+  <pre>   No Recent Activity.</pre>
+
   {% endfor %}
 </div>
-
-<!-- <div>
- 
-  {% for msg in room_messages %}
-  <small>
-    <pre><a href="{% url 'userProfile' msg.user.id %}">>@{{msg.user}}</a>      {{msg.created|timesince}} ago</pre>
-  </small>
-  <small> Replied to the post: "{{msg.room}}"</small>
-  <p>{{ msg }}</p>
-  {% if request.user == msg.user %}
-  <a href="{% url 'delete-message' msg.id %}">delete</a>
-  {% endif %}
-  <hr />
-  {% endfor %}
-</div> -->
