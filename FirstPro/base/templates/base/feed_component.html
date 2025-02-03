@@ -1,9 +1,10 @@
+{% load static %}
 <div>
   <div class="roomList">
     <div class="mobile-menu">
       <div class="mobile-menuItems">
-        <a class="btn btn--main btn--pill" href="#">Browse Topics</a>
-        <a class="btn btn--main btn--pill" href="#">Recent Activities</a>
+        <a class="btn btn--main btn--pill" href="{% url 'topics' %}">Browse Topics</a>
+        <a class="btn btn--main btn--pill" href="{% url 'recentActivities' %}">Recent Activities</a>
       </div>
     </div>
     <div class="roomList__header">
@@ -65,7 +66,7 @@
       </div>
       <div class="roomListRoom__content">
         <a href="{% url 'room' room.id %}">{{ room.name }}</a>
-        <p>{{ room.description }}</p>
+      
       </div>
       <div class="roomListRoom__meta">
         <a href="{% url 'room' room.id %}" class="roomListRoom__joined">
@@ -99,3 +100,5 @@
     {% endfor %}
   </div>
 </div>
+<script src="{% static 'js/script.js' %}"></script>
+

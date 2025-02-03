@@ -4,7 +4,7 @@
     <div class="layout__box">
       <div class="layout__boxHeader">
         <div class="layout__boxTitle">
-          <a href="{% url 'home' %}">
+          <a href="{% url 'room' room.id %}">
             <svg
               version="1.1"
               xmlns="http://www.w3.org/2000/svg"
@@ -18,19 +18,19 @@
               ></path>
             </svg>
           </a>
-          <h3>Create Study Room</h3>
+          <h3>Edit Study Room</h3>
         </div>
       </div>
       <div class="layout__body">
-        <form method="POST" class="form" action="{% url 'create_room' %}">
+        <form method="POST" class="form" action="{% url 'update_room' room.id  %}">
           {% csrf_token %}
           <div class="form__group">
             <label for="room_name">Room Name</label>
             <input
-            required
               id="room_name"
               name="room_name"
               type="text"
+              value="{{room.name}}"
               placeholder="E.g. Mastering Python + Django"
             />
           </div>
@@ -41,10 +41,11 @@
               required
               type="text"
               name="topic"
+              value="{{room.topic}}"
               id="room_topic"
               list="topic-list"
             />
-            <datalist id="topic-list">
+            <datalist id="topic-list" >
               <select id="room_topic">
                 <option value="">Select your topic</option>
                 {% for topic in topics %}
@@ -59,16 +60,18 @@
             <textarea
               name="room_about"
               id="room_about"
+              
+              
               placeholder="Write about your study group..."
-            ></textarea>
+            >{{room.description}}</textarea>
           </div>
           <div class="form__action">
-            <a class="btn btn--dark" href="{% url 'home' %}">Cancel</a>
-            <button class="btn btn--main" type="submit">Create Room</button>
+            <a class="btn btn--dark" href="{% url 'room' room.id %}">Cancel</a>
+            <button class="btn btn--main" type="submit">Update Room</button>
           </div>
         </form>
       </div>
     </div>
   </div>
-  {% endblock content %}
 </main>
+{% endblock content %}

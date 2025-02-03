@@ -1,4 +1,6 @@
-{% extends 'main.html' %} {% block content %}
+{% extends 'main.html' %} 
+{% load static %}
+{% block content %}
 
 <main class="profile-page layout layout--2">
   <div class="container">
@@ -26,7 +28,7 @@
         {% if request.user == room.host %}
 
         <div class="room__topRight">
-          <a href="#">
+          <a href="{% url 'update_room' room.id %}">
             <svg
               enable-background="new 0 0 24 24"
               height="32"
@@ -70,22 +72,6 @@
           </a>
         </div>
         {% endif %}
-
-        <!-- <button class="action-button" data-id="120" data-delete-url="https://randomuser.me/api/3324923"
-            data-edit-url="profile.html">
-            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
-              <title>ellipsis-horizontal</title>
-              <path
-                d="M16 7.843c-2.156 0-3.908-1.753-3.908-3.908s1.753-3.908 3.908-3.908c2.156 0 3.908 1.753 3.908 3.908s-1.753 3.908-3.908 3.908zM16 1.98c-1.077 0-1.954 0.877-1.954 1.954s0.877 1.954 1.954 1.954c1.077 0 1.954-0.877 1.954-1.954s-0.877-1.954-1.954-1.954z">
-              </path>
-              <path
-                d="M16 19.908c-2.156 0-3.908-1.753-3.908-3.908s1.753-3.908 3.908-3.908c2.156 0 3.908 1.753 3.908 3.908s-1.753 3.908-3.908 3.908zM16 14.046c-1.077 0-1.954 0.877-1.954 1.954s0.877 1.954 1.954 1.954c1.077 0 1.954-0.877 1.954-1.954s-0.877-1.954-1.954-1.954z">
-              </path>
-              <path
-                d="M16 31.974c-2.156 0-3.908-1.753-3.908-3.908s1.753-3.908 3.908-3.908c2.156 0 3.908 1.753 3.908 3.908s-1.753 3.908-3.908 3.908zM16 26.111c-1.077 0-1.954 0.877-1.954 1.954s0.877 1.954 1.954 1.954c1.077 0 1.954-0.877 1.954-1.954s-0.877-1.954-1.954-1.954z">
-              </path>
-            </svg>
-          </button> -->
       </div>
       <div class="room__box scroll">
         <div class="room__header scroll">
@@ -102,7 +88,14 @@
               <span>@{{ room.host.username }}</span>
             </a>
           </div>
-          <div class="room__details">{{ room.description }}</div>
+
+          <div class="room__details">
+            <p >
+              {{ room.description }}
+           
+            </p>
+          </div>
+
           <span class="room__topics">{{ room.topic }}</span>
         </div>
         <div class="room__conversation">
@@ -168,7 +161,7 @@
     <!--   Start -->
     <div class="participants">
       <h3 class="participants__top">
-        Participants <span>{{participants.count}}</span>
+        Participants <span>({{participants.count}} joined)</span>
       </h3>
       <div class="participants__list scroll">
         {% for participant in participants %}
@@ -191,58 +184,7 @@
     </div>
     <!--  End -->
   </div>
+  
 </main>
 
 {% endblock content %}
-
-<!-- 
-
-<style>
-  .room-container {
-    display: grid;
-    grid-template-columns: 3fr 1fr;
-  }
-</style>
-<div class="room-container">
-  <div>
-    <h1>{{room.name}}</h1>
-    <br />
-    <h3>{{room.description}}</h3>
-
-    <br />
-    <div class="comment-wrapper">
-      <h3>conversation</h3>
-      <hr />
-      <div>
-        {% for message in room_messages %}
-        <small>@{{message.user}} {{message.created|timesince}} ago</small><br />
-        <p>{{message.body}}</p>
-        {% if request.user == message.user %}
-        <a href="{% url 'delete-message' message.id %}">delete</a>
-        {% endif %}
-        <hr />
-
-        {% endfor %}
-      </div>
-    </div>
-
-    {% if request.user.is_authenticated %}
-    <div class="comment-form">
-      <form method="POST" action="">
-        {% csrf_token %}
-        <input type="text" name="body" placeholder="write something here..." />
-      </form>
-    </div>
-
-    {% endif %}
-  </div>
-
-  <div>
-    <h3>Participants</h3>
-    <hr />
-    {% for participant in participants %}
-    <small>@{{participant.username}}</small><br />
-    {% endfor %}
-  </div>
-</div>
- -->

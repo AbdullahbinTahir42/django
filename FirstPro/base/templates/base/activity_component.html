@@ -39,7 +39,7 @@
     <div class="activities__boxContent">
       <p>
         replied to post
-        <a href="{% url 'room' msg.room.id %}">“{{msg.room.topic}}”</a>
+        <a href="{% url 'room' msg.room.id %}">“{{msg.room}}”</a>
       </p>
       <div class="activities__boxRoomContent">{{ msg.body }}</div>
     </div>

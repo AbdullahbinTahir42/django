@@ -66,4 +66,20 @@ if (photoInput)
 
 // Scroll to Bottom
 const conversationThread = document.querySelector(".room__box");
-if (conversationThread) conversationThread.scrollTop = conversationThread.scrollHeight;
+if (conversationThread)
+  conversationThread.scrollTop = conversationThread.scrollHeight;
+
+//read more
+
+function toggleDescription() {
+  const shortDesc = document.getElementById("room-description-short");
+  const fullDesc = document.getElementById("room-description-full");
+
+  if (shortDesc.style.display === "block") {
+    shortDesc.style.display = "none";
+    fullDesc.style.display = "block";
+  } else {
+    shortDesc.style.display = "block";
+    fullDesc.style.display = "none";
+  }
+}

@@ -23,6 +23,8 @@
         </div>
       </div>
       <div class="layout__body">
+        {% if objct == 'room' %}
+
         <form method="POST" class="form" action="{% url 'delete-room' obj.id %}">
           {% csrf_token %}
           <div class="form__group">
@@ -33,6 +35,19 @@
             <input class="btn btn--main" type="submit" value="Confirm" />
           </div>
         </form>
+        {% else %}
+        
+        <form method="POST" class="form" action="{% url 'delete-message' obj.id %}">
+          {% csrf_token %}
+          <div class="form__group">
+            <p>Are you sure you want to delete "{{obj}}"?</p>
+          </div>
+
+          <div class="for__group">
+            <input class="btn btn--main" type="submit" value="Confirm" />
+          </div>
+        </form>
+        {% endif %}
       </div>
     </div>
   </div>

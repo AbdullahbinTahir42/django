@@ -1,5 +1,6 @@
 from django.forms import ModelForm
-from .models import Room,Topic,Message
+from .models import Room
+from django.contrib.auth.models import User
 
 class RoomForm(ModelForm):
     class Meta:
@@ -8,13 +9,8 @@ class RoomForm(ModelForm):
         exclude = ['host','participants']
 
 
-class TopicForm(ModelForm):
+class UserForm(ModelForm):
     class Meta:
-        model = Topic
-        fields = '__all__'  
-
-
-class MessageForm(ModelForm):
-    class Meta:
-        model = Message
-        fields = '__all__'  
+        model = User
+        fields = ['username', 'email']  
+        

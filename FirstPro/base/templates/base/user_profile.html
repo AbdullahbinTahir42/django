@@ -20,11 +20,15 @@
               <img src="https://randomuser.me/api/portraits/men/11.jpg" />
             </div>
           </div>
+       
           <div class="profile__info">
             <h3>{{user.username}}</h3>
             <p>@{{user.username}}</p>
-            <a href="edit-user.html" class="btn btn--main btn--pill">Edit Profile</a>
+            {% if request.user == user %}
+            <a href="{% url 'UpdateUser' %}" class="btn btn--main btn--pill">Edit Profile</a>
+            {% endif %}
           </div>
+         
           <div class="profile__about">
             <h3>About</h3>
             <p>
@@ -48,8 +52,7 @@
         {% for room in rooms %}
         <div class="roomListRoom">
           <div class="roomListRoom__header">
-            <a href="
-            " class="roomListRoom__author">
+            <a href="" class="roomListRoom__author">
               <div class="avatar avatar--small active">
                 <img src="https://randomuser.me/api/portraits/men/11.jpg" />
               </div>
@@ -61,7 +64,7 @@
             </div>
           </div>
           <div class="roomListRoom__content">
-            <a href="room.html"> {{room.name}}</a>
+            <a href="{% url 'room' room.id %}"> {{room.name}}</a>
             <p>
               {{room.description}}
             </p>
